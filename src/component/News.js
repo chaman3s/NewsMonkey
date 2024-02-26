@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import data  from "../sampleOutput.json"
+import Data  from "../sampleOutput.json"
 import NewsItem from './NewsItem'
 import Spinner from './Spinner';
 import PropTypes from 'prop-types'
@@ -8,7 +8,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 const News = (props)=>{
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true)
-    const [page, setPage] = useState(1)
     const [totalResults, setTotalResults] = useState(0)
     
     const capitalizeFirstLetter = (string) => {
@@ -24,8 +23,12 @@ const News = (props)=>{
         // let data = await fetch(url);
         props.setProgress(30);
         let parsedData;
-        console.log("ok",parsedData);
-        data.sample.map(((element)=>{if(element.category==props.category){parsedData=element.data}}));
+        Data.sample.map(((element)=>{
+            if(element.category===props.category)
+            {
+            parsedData=element.data;
+            
+            } }));
         props.setProgress(70);
         setArticles(parsedData.articles)
         setTotalResults(parsedData.totalResults)
@@ -36,21 +39,20 @@ const News = (props)=>{
     useEffect(() => {
         document.title = `${capitalizeFirstLetter(props.category)} - NewsMonkey`;
         updateNews(); 
-        // eslint-disable-next-line
     }, [])
 
 
-    const fetchMoreData = async () => {   
-        // console.log("helloo",props.apiKey);
-        // const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;
-        // setPage(page+1) 
-        // let data = await fetch(url);
+    // const fetchMoreData = async () => {   
+    //     // console.log("helloo",props.apiKey);
+    //     // const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page+1}&pageSize=${props.pageSize}`;
+    //     // setPage(page+1) 
+    //     // let data = await fetch(url);
 
-        let parsedData = await data.json()
-        console.log(parsedData);
-        setArticles(articles.concat(parsedData.articles))
-        setTotalResults(parsedData.totalResults)
-      };
+    //     let parsedData = await data.json()
+    //     console.log(parsedData);
+    //     setArticles(articles.concat(parsedData.articles))
+    //     setTotalResults(parsedData.totalResults)
+    //   };
  
         return (
             <>
@@ -59,7 +61,7 @@ const News = (props)=>{
                 <InfiniteScroll
                     dataLength={articles.length}
                    
-                    hasMore={articles.length !== totalResults}
+                    hasMore={articles.length !==totalResults}
                     loader={<Spinner/>}
                 > 
                     <div className="container">
